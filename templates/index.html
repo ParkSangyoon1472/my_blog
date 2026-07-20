@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Blog</title>
+<meta name="description" content="마크다운으로 작성한 블로그입니다.">
+<script>
+  (function () {
+    var stored = localStorage.getItem('theme');
+    var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+<link rel="stylesheet" href="{{cssPath}}">
+</head>
+<body>
+{{headerHtml}}
+<main>
+  <h1 class="page-title">최신 글</h1>
+  <div class="post-list">
+    {{postListHtml}}
+  </div>
+</main>
+{{footerHtml}}
+<script src="{{jsPath}}" defer></script>
+</body>
+</html>
