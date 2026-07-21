@@ -63,7 +63,12 @@
     }
 
     frames.forEach(function (frame) {
-      frame.addEventListener('load', function () { fitPreview(frame); });
+      fitPreview(frame);
+      frame.addEventListener('load', function () {
+        fitPreview(frame);
+        setTimeout(function () { fitPreview(frame); }, 100);
+        setTimeout(function () { fitPreview(frame); }, 400);
+      });
     });
 
     var resizeTimer = null;
