@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>픽셀 아트 에디터</title>
+<meta name="description" content="16x16 격자에 도트를 찍어 그림을 그리고 PNG로 저장하는 미니 에디터">
+<script>
+  (function () {
+    var stored = localStorage.getItem('theme');
+    var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="editor-main">
+  <h1 class="editor-title">픽셀 아트 에디터</h1>
+
+  <div class="current-color-preview">
+    <span class="current-color-label">현재 색상</span>
+    <span class="current-color-swatch" id="current-color-swatch" aria-hidden="true"></span>
+  </div>
+
+  <div class="board-wrap">
+    <canvas id="pixel-canvas" width="16" height="16" aria-hidden="true"></canvas>
+    <div class="pixel-grid" id="pixel-grid" role="grid" aria-label="16x16 픽셀 캔버스"></div>
+  </div>
+
+  <div class="palette" id="palette" role="group" aria-label="색상 팔레트">
+    <button type="button" class="swatch swatch-transparent" data-color="" data-name="투명(지우개)" title="투명(지우개)" aria-label="투명(지우개)" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#000000" data-color="#000000" data-name="검정" title="검정" aria-label="검정" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#ffffff" data-color="#ffffff" data-name="흰색" title="흰색" aria-label="흰색" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#8d8db0" data-color="#8d8db0" data-name="회색" title="회색" aria-label="회색" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#ff2bd6" data-color="#ff2bd6" data-name="네온 핑크" title="네온 핑크" aria-label="네온 핑크" aria-pressed="true"></button>
+    <button type="button" class="swatch" style="background:#00fff2" data-color="#00fff2" data-name="네온 시안" title="네온 시안" aria-label="네온 시안" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#b026ff" data-color="#b026ff" data-name="네온 퍼플" title="네온 퍼플" aria-label="네온 퍼플" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#39ff88" data-color="#39ff88" data-name="네온 그린" title="네온 그린" aria-label="네온 그린" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#ff4d4d" data-color="#ff4d4d" data-name="빨강" title="빨강" aria-label="빨강" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#ff9d2b" data-color="#ff9d2b" data-name="주황" title="주황" aria-label="주황" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#ffe94d" data-color="#ffe94d" data-name="노랑" title="노랑" aria-label="노랑" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#4d7dff" data-color="#4d7dff" data-name="파랑" title="파랑" aria-label="파랑" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#6b4423" data-color="#6b4423" data-name="갈색" title="갈색" aria-label="갈색" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#1a1a2e" data-color="#1a1a2e" data-name="남색" title="남색" aria-label="남색" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#5c5c7a" data-color="#5c5c7a" data-name="연회색" title="연회색" aria-label="연회색" aria-pressed="false"></button>
+    <button type="button" class="swatch" style="background:#d6009c" data-color="#d6009c" data-name="진분홍" title="진분홍" aria-label="진분홍" aria-pressed="false"></button>
+    <label class="custom-color-label" for="custom-color" title="커스텀 색상">
+      <input type="color" id="custom-color" value="#ff2bd6" aria-label="커스텀 색상 선택">
+    </label>
+  </div>
+
+  <div class="toolbar">
+    <button type="button" id="draw-tool-btn" class="btn btn-secondary tool-btn" aria-pressed="true">그리기</button>
+    <button type="button" id="erase-tool-btn" class="btn btn-secondary tool-btn" aria-pressed="false">지우개</button>
+    <button type="button" id="clear-btn" class="btn">전체 지우기</button>
+  </div>
+
+  <div class="toolbar">
+    <button type="button" id="save-original-btn" class="btn btn-primary">원본 크기로 저장 (16x16)</button>
+    <button type="button" id="save-large-btn" class="btn btn-primary">확대해서 저장 (512x512)</button>
+  </div>
+
+  <p class="instructions">마우스 클릭/드래그 또는 터치로 그립니다. 그리드에 포커스한 뒤 방향키로 이동, Enter/Space로 찍을 수 있습니다.</p>
+</main>
+<script src="editor.js" defer></script>
+</body>
+</html>
