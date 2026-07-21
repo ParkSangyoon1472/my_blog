@@ -382,6 +382,70 @@ pre code {
   margin-bottom: var(--space-1);
 }
 
+/* Apps (index page) */
+
+.app-section {
+  margin-bottom: var(--space-4);
+}
+
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-3);
+}
+
+.app-card {
+  padding: var(--space-3);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-neon-purple);
+  border-radius: var(--radius);
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+
+.app-card:hover {
+  border-left-color: var(--color-neon-pink);
+  box-shadow: var(--glow-purple);
+  transform: translateY(-2px);
+}
+
+.app-preview {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  aspect-ratio: 1 / 1.15;
+  margin-bottom: var(--space-2);
+}
+
+.app-preview iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  pointer-events: none;
+}
+
+.app-card h3 {
+  margin: 0 0 var(--space-1);
+  font-size: 1.1rem;
+}
+
+.app-card h3 a {
+  border-bottom: none;
+  color: var(--color-text);
+}
+
+.app-card:hover h3 a {
+  color: var(--color-neon-pink);
+  text-shadow: var(--glow-pink);
+}
+
+.app-card p {
+  color: var(--color-text-muted);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
 /* Post article */
 
 .post h1 {

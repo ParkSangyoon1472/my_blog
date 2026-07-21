@@ -13,6 +13,7 @@ const TEMPLATES_DIR = path.join(ROOT, 'templates');
 const CSS_DIR = path.join(ROOT, 'css');
 const JS_DIR = path.join(ROOT, 'js');
 const ASSETS_DIR = path.join(ROOT, 'assets');
+const APPS_DIR = path.join(ROOT, 'apps');
 const DIST_DIR = path.join(ROOT, 'dist');
 
 function readTemplate(relativePath) {
@@ -143,6 +144,12 @@ function copyStaticAssets() {
   cpSync(JS_DIR, path.join(DIST_DIR, 'js'), { recursive: true });
   if (existsSync(ASSETS_DIR)) {
     cpSync(ASSETS_DIR, path.join(DIST_DIR, 'assets'), { recursive: true });
+  }
+  if (existsSync(APPS_DIR)) {
+    cpSync(APPS_DIR, path.join(DIST_DIR, 'apps'), {
+      recursive: true,
+      filter: (src) => !src.endsWith('.md'),
+    });
   }
 }
 

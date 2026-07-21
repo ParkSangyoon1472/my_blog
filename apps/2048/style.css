@@ -1,0 +1,357 @@
+/* 2048 game styles — self-contained, does not import the blog's css/style.css.
+   Color values are copied from the blog's design system so the game looks
+   consistent, but this file has no file dependency on it. */
+
+:root {
+  --color-bg: #050507;
+  --color-bg-elevated: #0d0d14;
+  --color-text: #e8e8ff;
+  --color-text-muted: #8d8db0;
+  --color-neon-pink: #ff2bd6;
+  --color-neon-cyan: #00fff2;
+  --color-neon-purple: #b026ff;
+  --color-neon-green: #39ff88;
+  --color-border: rgba(0, 255, 242, 0.35);
+  --glow-pink: 0 0 6px rgba(255, 43, 214, 0.85), 0 0 20px rgba(255, 43, 214, 0.45);
+  --glow-cyan: 0 0 6px rgba(0, 255, 242, 0.85), 0 0 20px rgba(0, 255, 242, 0.45);
+  --glow-purple: 0 0 6px rgba(176, 38, 255, 0.85), 0 0 20px rgba(176, 38, 255, 0.4);
+  --grid-line: rgba(0, 255, 242, 0.06);
+
+  /* r,g,b triplets for tile glow scaling via rgba(var(--x-rgb), alpha) */
+  --rgb-pink: 255, 43, 214;
+  --rgb-cyan: 0, 255, 242;
+  --rgb-purple: 176, 38, 255;
+  --rgb-green: 57, 255, 136;
+  --tile-glow-mult: 1;
+
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", monospace;
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --radius: 10px;
+}
+
+html[data-theme="light"] {
+  --color-bg: #faf8ff;
+  --color-bg-elevated: #f1ecff;
+  --color-text: #1a1a2e;
+  --color-text-muted: #5c5c7a;
+  --color-neon-pink: #d6009c;
+  --color-neon-cyan: #0091b3;
+  --color-neon-purple: #7a1fd6;
+  --color-neon-green: #0a8f3c;
+  --color-border: rgba(122, 31, 214, 0.25);
+  --glow-pink: none;
+  --glow-cyan: none;
+  --glow-purple: none;
+  --grid-line: transparent;
+
+  --rgb-pink: 214, 0, 156;
+  --rgb-cyan: 0, 145, 179;
+  --rgb-purple: 122, 31, 214;
+  --rgb-green: 10, 143, 60;
+  --tile-glow-mult: 0.35;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 42px 42px;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+.game-main {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-2) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.game-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--color-neon-pink);
+  text-shadow: var(--glow-pink);
+}
+
+/* Scoreboard */
+
+.scoreboard {
+  display: flex;
+  gap: var(--space-2);
+  width: min(90vw, 420px);
+}
+
+.score-box {
+  flex: 1;
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.5rem var(--space-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.score-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+}
+
+.score-value {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-neon-cyan);
+  text-shadow: var(--glow-cyan);
+  position: relative;
+}
+
+.score-value.pulse {
+  animation: score-pulse 0.4s ease;
+}
+
+@keyframes score-pulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* Board */
+
+.board-wrap {
+  position: relative;
+  width: min(90vw, 420px);
+}
+
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.6rem;
+  touch-action: none;
+}
+
+.board-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+  flex: 1;
+}
+
+.cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-border);
+  border-radius: calc(var(--radius) - 4px);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: clamp(0.9rem, 6vw, 1.75rem);
+  line-height: 1;
+  color: var(--color-text);
+  transition: background-color 0.15s ease;
+}
+
+.cell.tile-c0 { color: var(--color-neon-pink); }
+.cell.tile-c1 { color: var(--color-neon-cyan); }
+.cell.tile-c2 { color: var(--color-neon-purple); }
+.cell.tile-c3 { color: var(--color-neon-green); }
+
+.cell.tile-c0 {
+  background-color: rgba(var(--rgb-pink), 0.1);
+  border-color: rgba(var(--rgb-pink), 0.5);
+  box-shadow:
+    0 0 calc((4px + 2px * var(--lv, 1)) * var(--tile-glow-mult)) rgba(var(--rgb-pink), calc((0.2 + 0.06 * var(--lv, 1)) * var(--tile-glow-mult))),
+    0 0 calc((14px + 4px * var(--lv, 1)) * var(--tile-glow-mult)) rgba(var(--rgb-pink), calc((0.12 + 0.04 * var(--lv, 1)) * var(--tile-glow-mult)));
+}
+
+.cell.tile-c1 {
+  background-color: rgba(var(--rgb-cyan), 0.1);
+  border-color: rgba(var(--rgb-cyan), 0.5);
+  box-shadow:
+    0 0 calc((4px + 2px * var(--lv, 1)) * var(--tile-glow-mult)) rgba(var(--rgb-cyan), calc((0.2 + 0.06 * var(--lv, 1)) * var(--tile-glow-mult))),
+    0 0 calc((14px + 4px * var(--lv, 1)) * var(--tile-glow-mult)) rgba(var(--rgb-cyan), calc((0.12 + 0.04 * var(--lv, 1)) * var(--tile-glow-mult)));
+}
+
+.cell.tile-c2 {
+  background-color: rgba(var(--rgb-purple), 0.1);
+  border-color: rgba(var(--rgb-purple), 0.5);
+  box-shadow:
+    0 0 calc((4px + 2px * var(--lv, 1)) * var(--tile-glow-mult)) rgba(var(--rgb-purple), calc((0.2 + 0.06 * var(--lv, 1)) * var(--tile-glow-mult))),
+    0 0 calc((14px + 4px * var(--lv, 1)) * var(--tile-glow-mult)) rgba(var(--rgb-purple), calc((0.12 + 0.04 * var(--lv, 1)) * var(--tile-glow-mult)));
+}
+
+.cell.tile-c3 {
+  background-color: rgba(var(--rgb-green), 0.1);
+  border-color: rgba(var(--rgb-green), 0.5);
+  box-shadow:
+    0 0 calc((4px + 2px * var(--lv, 1)) * var(--tile-glow-mult)) rgba(var(--rgb-green), calc((0.2 + 0.06 * var(--lv, 1)) * var(--tile-glow-mult))),
+    0 0 calc((14px + 4px * var(--lv, 1)) * var(--tile-glow-mult)) rgba(var(--rgb-green), calc((0.12 + 0.04 * var(--lv, 1)) * var(--tile-glow-mult)));
+}
+
+.cell.tile-new {
+  animation: tile-pop 0.18s ease;
+}
+
+.cell.tile-merged {
+  animation: tile-merge-pulse 0.22s ease;
+}
+
+@keyframes tile-pop {
+  0% { transform: scale(0.5); opacity: 0.4; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes tile-merge-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+/* Overlay */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background-color: rgba(5, 5, 7, 0.82);
+  border-radius: var(--radius);
+  padding: var(--space-2);
+  text-align: center;
+}
+
+html[data-theme="light"] .overlay {
+  background-color: rgba(250, 248, 255, 0.9);
+}
+
+.overlay[hidden] {
+  display: none;
+}
+
+.overlay-message {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-neon-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.overlay-buttons {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Buttons */
+
+.btn {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text);
+  background-color: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.55rem 1.2rem;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:hover {
+  border-color: var(--color-neon-pink);
+  box-shadow: var(--glow-pink);
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  border-color: var(--color-neon-cyan);
+  color: var(--color-neon-cyan);
+}
+
+.btn-secondary {
+  border-color: var(--color-neon-purple);
+  color: var(--color-neon-purple);
+}
+
+.btn:focus-visible,
+.cell:focus-visible {
+  outline: 2px solid var(--color-neon-cyan);
+  outline-offset: 2px;
+  box-shadow: var(--glow-cyan);
+}
+
+.instructions {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .score-value.pulse,
+  .cell.tile-new,
+  .cell.tile-merged {
+    animation: none;
+  }
+}
+
+/* Responsive */
+
+@media (max-width: 480px) {
+  .game-title {
+    font-size: 1.5rem;
+  }
+
+  body {
+    background-size: 28px 28px;
+  }
+}

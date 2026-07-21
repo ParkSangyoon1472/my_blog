@@ -18,6 +18,20 @@
 {{headerHtml}}
 <main>
   <h1 class="page-title">최신 글</h1>
+
+  <section class="app-section" aria-labelledby="apps-heading">
+    <h2 id="apps-heading">미니 웹앱</h2>
+    <div class="app-grid">
+      <article class="app-card">
+        <div class="app-preview">
+          <iframe src="apps/2048/index.html" title="2048 게임 미리보기" loading="lazy" scrolling="no" tabindex="-1"></iframe>
+        </div>
+        <h3><a href="apps/2048/index.html">2048</a></h3>
+        <p>방향키로 숫자 타일을 밀어서 합치는 퍼즐 게임</p>
+      </article>
+    </div>
+  </section>
+
   <div class="post-list">
     {{postListHtml}}
   </div>
