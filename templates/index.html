@@ -45,5 +45,35 @@
 </main>
 {{footerHtml}}
 <script src="{{jsPath}}" defer></script>
+<script>
+  (function () {
+    var frames = Array.prototype.slice.call(document.querySelectorAll('.app-preview iframe'));
+    if (!frames.length) return;
+
+    function fitPreview(frame) {
+      var doc;
+      try {
+        doc = frame.contentDocument || frame.contentWindow.document;
+      } catch (e) {
+        return;
+      }
+      if (!doc || !doc.documentElement) return;
+      var height = doc.documentElement.scrollHeight;
+      if (height > 0) frame.style.height = height + 'px';
+    }
+
+    frames.forEach(function (frame) {
+      frame.addEventListener('load', function () { fitPreview(frame); });
+    });
+
+    var resizeTimer = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        frames.forEach(fitPreview);
+      }, 150);
+    });
+  })();
+</script>
 </body>
 </html>

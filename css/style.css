@@ -413,13 +413,12 @@ pre code {
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   overflow: hidden;
-  aspect-ratio: 1 / 1.15;
   margin-bottom: var(--space-2);
 }
 
 .app-preview iframe {
   width: 100%;
-  height: 100%;
+  height: 400px;
   border: none;
   display: block;
   pointer-events: none;
